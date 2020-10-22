@@ -10,8 +10,37 @@ class Item extends PureComponent {
   render() {
     const x = this.props.position[0] - RADIUS / 2;
     const y = this.props.position[1] - RADIUS / 2;
+    let item = this.props.item;
+    let img;
+    switch(item) {
+      case 'apple':
+        img = require('./assets/apple.png');
+        break;
+      case 'banana':
+        img = require('./assets/banana.png');
+        break;
+      case 'can':
+        img = require('./assets/can.png');
+        break;
+      case 'champagne':
+        img = require('./assets/champagne.png');
+        break;
+      case 'milk-box':
+        img = require('./assets/milk-box.png');
+        break;
+      case 'newspaper':
+        img = require('./assets/newspaper.png');
+        break;
+      case 'plastic-bottle':
+        img = require('./assets/plastic-bottle.png');
+        break;
+      default:
+        img = require('./assets/newspaper.png');
+    }
+    //img = require('./assets/'+item+'.png'); -> should get rid of the long switch!
+
     return (
-      <Image source={require('./assets/apple.png')} style={[styles.newspaper, { left: x, top: y }]}/>
+      <Image source={img} style={[styles.newspaper, { left: x, top: y }]}/>
     );
   }
 }

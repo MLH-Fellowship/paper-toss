@@ -15,7 +15,7 @@ export default class App extends PureComponent  {
     this.state ={
       running: true,
       points: 0,
-      item: "newspaper"
+      item: "can"
     }
   }
 
@@ -27,7 +27,7 @@ export default class App extends PureComponent  {
         style={styles.container}
         systems={[MoveItem, Collision]}
         entities={{
-          1: { position: [WIDTH/2, HEIGHT-100], /*item: {this.state.item},*/ renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          1: { position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
           2: {position: [WIDTH - 40, HEIGHT/2], category: "paper", renderer: <Bin/>},
           3: {position: [WIDTH - 40, HEIGHT/4], category: "glass", renderer: <Bin/>},
           4: {position: [WIDTH/8, HEIGHT/2], category: "organic",renderer: <Bin/>},

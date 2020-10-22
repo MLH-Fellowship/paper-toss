@@ -40,7 +40,7 @@ class Item extends PureComponent {
     //img = require('./assets/'+item+'.png'); -> should get rid of the long switch!
 
     return (
-      <Image source={img} style={[styles.newspaper, { left: x, top: y }]}/>
+      <Image source={img} style={[styles.item, { left: x, top: y }]}/>
     );
   }
 }
@@ -73,22 +73,13 @@ class Bin extends PureComponent {
 }
  
 const styles = StyleSheet.create({
-  item: {
-    borderColor: "#CCC",
-    borderWidth: 4,
-    borderRadius: RADIUS * 2,
-    width: RADIUS * 2,
-    height: RADIUS * 2,
-    backgroundColor: "pink",
-    position: "absolute"
-  },
   bin: {
     borderRadius: RADIUS * 2,
     width: RADIUS * 3,
     height: RADIUS * 4,
     position: "absolute"
   },
-  newspaper: {
+  item: {
     borderRadius: RADIUS * 2,
     width: RADIUS * 2,
     height: RADIUS * 2,

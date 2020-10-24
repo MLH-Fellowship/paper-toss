@@ -4,6 +4,7 @@ import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Item from './entities/Item';
 import Bin from './entities/Bin';
+import Timer from './entities/Timer';
 import Constants from './Constants';
 import Physics from './systems/Physics';
 
@@ -36,6 +37,7 @@ export default class App extends Component {
 
         return {
             physics: { engine: engine, world: world },
+            timer: {renderer: Timer},
             item: { body: item, size: [20, 20], color: 'red', item: "can", renderer: Item},
             binGlass: { body: binGlass, size: [20, 20], color: 'blue', category: "glass",  renderer: Bin},
             binOrganic: { body: binOrganic, size: [20, 20], color: 'blue', category: "organic", renderer: Bin},

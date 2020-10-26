@@ -72,6 +72,8 @@ class Bin extends PureComponent {
           img = require('./assets/bin_organic.png');
         else if (c=="plastic")
           img = require('./assets/bin_plastic.png');
+        else if (c=="cloud")
+          img = require('./assets/cloud.png');
         else if (c=="trash")
           img = require('./assets/bin_trash.png');
         

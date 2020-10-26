@@ -124,7 +124,7 @@ render() {
       <View>
           { minutes === 0 && seconds === 0
               ? <Text>Busted!</Text>
-              : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+              : <Text>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
           }
       </View>
   )
@@ -142,6 +142,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS * 2,
     width: RADIUS * 2,
     height: RADIUS * 2,
+    position: "absolute"
+  },
+  timer: {
+    //...
     position: "absolute"
   }
 

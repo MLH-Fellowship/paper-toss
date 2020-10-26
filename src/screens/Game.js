@@ -23,11 +23,12 @@ export default class Game extends React.Component  {
     }
   }
 
-  storeData = async (value) => {
+  storeData = (value) => {
+    console.log("storeData");
     try {
       console.log("saved");
       alert("Saved!");
-      return await AsyncStorage.setItem('points', value);
+      AsyncStorage.setItem('points', value);
       
     } catch (e) {
       console.log("can't save");
@@ -38,6 +39,7 @@ export default class Game extends React.Component  {
   onEvent = (e) => {
     if (e.type=='game-over') {
       this.storeData(this.state.points);
+      console.log("called storeData");
       this.setState({
         running: false
       });

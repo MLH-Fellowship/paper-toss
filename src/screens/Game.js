@@ -24,15 +24,30 @@ export default class Game extends React.Component  {
   }
 
   storeData = async (value) => {
-    try {
+    const v = [value];
+    AsyncStorage.getItem('points', (err,result) => {
+      if (result !== null) {
+        console.log('Data found', result);
+        var arr = JSON.parse(result) || [];
+        var newPoints = arr.concat(v);
+        console.log(newPoints);
+        AsyncStorage.setItem('points', JSON.stringify(newPoints));
+      }
+      else {
+        console.log("data not found");
+        AsyncStorage.setItem('points', JSON.stringify(v));
+      }
+    })
+  }
+    /*try {
       alert("Saved!");
       await AsyncStorage.setItem('points', value);
       
     } catch (e) {
       console.log("can't save");
       alert("Failed to save the data to the storage");
-    }
-  }
+    }*/
+  
 
   onEvent = (e) => { 
    if (e.type == 'correct') {

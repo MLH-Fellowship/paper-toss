@@ -34,7 +34,7 @@ const GameOver = ({route, navigation}) => {
 
     return(
     <View>
-        <Text>Game Over. Your score is {route.params.points}</Text>
+        <Text>Game Over. Your score is {points}</Text>
         <Button
         title="Go back to menu"
         onPress={() => navigation.navigate('Start')}

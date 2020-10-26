@@ -23,8 +23,10 @@ export default class Game extends React.Component  {
     }
   }
 
-  storeData = async (value) => {
-    const v = [value];
+  storeData = async (points, username) => {
+    const v = [{
+      points:points,
+      username: username}];
     AsyncStorage.getItem('points', (err,result) => {
       if (result !== null) {
         console.log('Data found', result);
@@ -64,7 +66,7 @@ export default class Game extends React.Component  {
 
   onChangeTimer = () => {   
     console.log("game over");
-    this.storeData(JSON.stringify(this.state.points));
+    this.storeData(JSON.stringify(this.state.points), 'Diana');
     this.setState({ running: false });
     
   }

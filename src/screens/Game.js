@@ -87,14 +87,23 @@ export default class Game extends React.Component  {
         onEvent = {this.onEvent}
         systems={[MoveItem, Collision]}
         entities={{
-          1: { position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          1: {position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          2: {position: [WIDTH-125, HEIGHT/3], category: "paper", renderer: <Bin/>},
+          3: {position: [WIDTH-55, HEIGHT/3], category: "glass", renderer: <Bin/>},
+          4: {position: [WIDTH/3.7, HEIGHT/3], category: "organic",renderer: <Bin/>},
+          5: {position: [WIDTH/16, HEIGHT/3], category: "plastic", renderer: <Bin/>},
+          6: {position: [WIDTH/2.1, HEIGHT/3], category: "trash", renderer: <Bin/>},
+
+        }}>
+          {/* entities={{
+          1: {position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
           2: {position: [WIDTH - 40, HEIGHT/2], category: "paper", renderer: <Bin/>},
           3: {position: [WIDTH - 40, HEIGHT/4], category: "glass", renderer: <Bin/>},
           4: {position: [WIDTH/8, HEIGHT/2], category: "organic",renderer: <Bin/>},
           5: {position: [WIDTH/8, HEIGHT/4], category: "plastic", renderer: <Bin/>},
           6: {position: [WIDTH/2, HEIGHT/6], category: "trash", renderer: <Bin/>},
 
-        }}>
+        }}> */}
       <StatusBar hidden={true} />
       </GameEngine>
       {!this.state.running && 

@@ -65,13 +65,13 @@ class Bin extends PureComponent {
         let c = this.props.category;
         let img;
         if (c=="paper")
-          img = require('./assets/bin_paper.jpg');
+          img = require('./assets/bin_paper.png');
         else if (c=="glass")
-          img = require('./assets/bin_glass.jpg');
+          img = require('./assets/bin_glass.png');
         else if (c=="organic")
-          img = require('./assets/bin_organic.jpg');
+          img = require('./assets/bin_organic.png');
         else if (c=="plastic")
-          img = require('./assets/bin_plastic.jpg');
+          img = require('./assets/bin_plastic.png');
         else if (c=="trash")
           img = require('./assets/bin_trash.png');
         

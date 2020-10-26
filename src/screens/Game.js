@@ -1,9 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {PureComponent} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, View, Dimensions, Alert, Button} from 'react-native';
+import { StyleSheet, View, Dimensions, Alert, Modal} from 'react-native';
+import {
+  Container, Header, Content, Card, Input,
+  CardItem, Text, Right, Icon, Row,
+  Left, Body, Title, Button, Label, Form, Item }
+from 'native-base';
 import { GameEngine } from "react-native-game-engine";
-import { Item, Bin, Timer } from "../renderers";
+import { OurItem, Bin, Timer } from "../renderers";
 import { MoveItem, Collision } from "../systems";
 import Constants from './../Constants';
 const WIDTH = Constants.WIDTH;
@@ -19,6 +24,8 @@ export default class Game extends React.Component  {
       running: true,
       points: 0,
       updateTimer: 0,
+      username: '',
+      visibleModal: true,
       item: "can" //random
     }
   }
@@ -29,27 +36,18 @@ export default class Game extends React.Component  {
       username: username}];
     AsyncStorage.getItem('points', (err,result) => {
       if (result !== null) {
-        console.log('Data found', result);
+        //console.log('Data found', result);
         var arr = JSON.parse(result) || [];
         var newPoints = arr.concat(v);
-        console.log(newPoints);
         AsyncStorage.setItem('points', JSON.stringify(newPoints));
       }
       else {
-        console.log("data not found");
+        //console.log("data not found");
         AsyncStorage.setItem('points', JSON.stringify(v));
       }
     })
   }
-    /*try {
-      alert("Saved!");
-      await AsyncStorage.setItem('points', value);
-      
-    } catch (e) {
-      console.log("can't save");
-      alert("Failed to save the data to the storage");
-    }*/
-  
+
 
   onEvent = (e) => { 
    if (e.type == 'correct') {
@@ -64,9 +62,8 @@ export default class Game extends React.Component  {
     }
   }
 
+  //game over
   onChangeTimer = () => {   
-    console.log("game over");
-    this.storeData(JSON.stringify(this.state.points), 'Diana');
     this.setState({ running: false });
     
   }
@@ -79,13 +76,50 @@ export default class Game extends React.Component  {
     });
 }
 
+  renderModalContent(){
+    return (
+      <View style={styles.modalView}>
+        <Form>
+          <Item fixedLabel>
+            <Label>Your score: {this.state.points}. To save it insert your username</Label>
+            <Input 
+              value={this.state.username}
+              onChangeText={(text) => { 
+                this.setState({username: text})}}
+            />
+            </Item>
+            <Button onPress={() => {
+              this.storeData(JSON.stringify(this.state.points), this.state.username);
+              this.reset()
+              
+              }}>
+              <Text>Play again</Text>
+            </Button>
+            <Button title="View Leaderboard" 
+            onPress={() => {
+              this.storeData(JSON.stringify(this.state.points), this.state.username);
+              this.props.navigation.navigate("GameOver", {points: this.state.points})
+              this.setState({
+              visibleModal: false
+              })
+          }
+            }>
+                <Text>View Leaderboard</Text>
+            </Button>
+          <Button
+            onPress={() => this.setState({
+              visibleModal: false
+            })}
+          >
+          <Text>Hide Modal</Text>
+          </Button>
+        </Form>
+     
+      </View>
+      )
+    }
 
 
-//
-   /* componentDidMount() {
-        if (this.props.route.params.startAgain==true)
-        this.reset();
-    }*/
   
   render() {
   return (
@@ -99,7 +133,7 @@ export default class Game extends React.Component  {
         onEvent = {this.onEvent}
         systems={[MoveItem, Collision]}
         entities={{
-          1: {position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          1: {position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <OurItem/>}, //-- Notice that each entity has a unique id (required)
           2: {position: [WIDTH-125, HEIGHT/3], category: "paper", renderer: <Bin/>},
           3: {position: [WIDTH-55, HEIGHT/3], category: "glass", renderer: <Bin/>},
           4: {position: [WIDTH/3.7, HEIGHT/3], category: "organic",renderer: <Bin/>},
@@ -119,20 +153,14 @@ export default class Game extends React.Component  {
       <StatusBar hidden={true} />
       </GameEngine>
       {!this.state.running && 
-      Alert.alert(
-          'Game over! Your score: '+this.state.points,
-          '',
-          [
-              {
-                  text: 'Play again',
-                  onPress: () => this.reset()
-              },
-              {
-                  text: 'View Scoreboard',
-                  onPress: () => this.props.navigation.navigate("GameOver", {points: this.state.points})
-              }
-          ]
-      )} 
+      <Modal
+      transparent={true}
+      visible={this.state.visibleModal}
+      animationType="slide"
+  >
+      {this.renderModalContent()}
+  </Modal>
+        } 
       <StatusBar style="auto" />
     </View>
   );
@@ -147,6 +175,13 @@ const styles = StyleSheet.create({
   },
   points: {
     color: 'red'
+  },
+  modalView: {
+    //justifyContent: "center",
+    //alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: "white",
+    width: WIDTH*0.8
   }
   
 });

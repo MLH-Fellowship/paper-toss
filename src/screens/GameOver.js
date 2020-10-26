@@ -11,7 +11,7 @@ const GameOver = ({route, navigation}) => {
   const getData = async () => {
     AsyncStorage.getItem('points', (err,result) => {
       if (result !== null) {
-        console.log('Data found', result);
+        //console.log('Data found', result);
         setPoints(result)
       }
 })
@@ -28,7 +28,7 @@ const GameOver = ({route, navigation}) => {
 
     return(
     <View>
-        <Text>Game Over. Your score is {route.params.points}</Text>
+        <Text>Game Over. Your score is {route.params.points}. Username: {route.params.username}</Text>
         <Text>Leaderboard {points}</Text>
         
 

@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 import Constants from './Constants';
 
 const RADIUS = Constants.RADIUS;
-class Item extends PureComponent {
+class OurItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
 
 });
  
-export { Item, Bin, Timer };
+export { OurItem, Bin, Timer };

@@ -25,23 +25,22 @@ const GameOver = ({route, navigation}) => {
 
 <Text>Leaderboard {JSON.stringify(points)}</Text>
     return(
-    <View>
+    <View style={styles.scoreboard}>
         <Text>Game Over. Your score is {route.params.points}</Text>
+          <View>
           {
           points
           .sort((a,b) => a.points < b.points ? 1: -1)
           .map((entry,index) => {
             return(
             <View>
-              <Text>{index+1}</Text>
+              <Text>{index+1}</Text> 
           <Text>naaame {entry.username}</Text>
           <Text>poooints {entry.points}</Text>
           </View>
           )})
         }
-    
-             
-
+        </View>
 
         <Button
         title="Go back to menu"
@@ -50,5 +49,12 @@ const GameOver = ({route, navigation}) => {
     </View>
     );
   };
+
+  
+const styles = StyleSheet.create({
+  scoreboard: {
+    backgroundColor: '#B8E994',
+  },
+});
    
   export default GameOver;

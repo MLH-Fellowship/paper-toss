@@ -21,28 +21,17 @@ const GameOver = ({route, navigation}) => {
    getData();
   });
 
-
-//{/*route.params.points*/}
-// {points}
-/*
-  results(() => {
-    <View>
-    {points.map(entry => {
-      <View>
-      <Text>{entry.username}</Text>
-      <Text>{entry.points}</Text>
-      </View>
-    })}
-    </View>
-  })*/
- //      <div>{persons.map(person => <div key={person.name}> {person.name} </div>)}</div>
 <Text>Leaderboard {JSON.stringify(points)}</Text>
     return(
     <View>
         <Text>Game Over. Your score is {route.params.points}</Text>
-          {points.map(entry => {
+          {
+          points
+          .sort((a,b) => a.points < b.points ? 1: -1)
+          .map((entry,index) => {
             return(
             <View>
+              <Text>{index+1}</Text>
           <Text>naaame {entry.username}</Text>
           <Text>poooints {entry.points}</Text>
           </View>

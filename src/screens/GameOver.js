@@ -7,12 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GameOver = ({route, navigation}) => {
   const [points, setPoints] = useState([{}]);
+
   
   const getData = async () => {
     AsyncStorage.getItem('points', (err,result) => {
       if (result !== null) {
         //console.log('Data found', result);
         setPoints(JSON.parse(result))
+
       }
 })
   }
@@ -39,6 +41,7 @@ const GameOver = ({route, navigation}) => {
         }
     
              
+
 
         <Button
         title="Go back to menu"

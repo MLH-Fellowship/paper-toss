@@ -106,13 +106,6 @@ export default class Game extends React.Component  {
             }>
                 <Text>View Leaderboard</Text>
             </Button>
-          <Button
-            onPress={() => this.setState({
-              visibleModal: false
-            })}
-          >
-          <Text>Hide Modal</Text>
-          </Button>
         </Form>
      
       </View>

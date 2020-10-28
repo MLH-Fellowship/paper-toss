@@ -1,10 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {PureComponent} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, View, Dimensions, Alert, Button} from 'react-native';
+import { StyleSheet, View, Dimensions, Alert, Modal, Pressable} from 'react-native';
+import {
+  Container, Header, Content, Card, Input,
+  CardItem, Text, Right, Icon, Row,
+  Left, Body, Title, Button, Label, Form, Item }
+from 'native-base';
 import { GameEngine } from "react-native-game-engine";
-import { Item, Bin, Timer, Floor } from "../renderers";
+
+import { OurItem, Bin, Timer, Floor } from "../renderers";
 import { MoveItem, Collision } from "../systems";
+import { Audio } from 'expo-av';
+import { Octicons } from '@expo/vector-icons';
 import Constants from './../Constants';
 const WIDTH = Constants.WIDTH;
 const HEIGHT = Constants.HEIGHT;
@@ -19,31 +27,74 @@ export default class Game extends React.Component  {
       running: true,
       points: 0,
       updateTimer: 0,
+      username: '',
+      visibleModal: true,
       item: "can" //random
     }
   }
 
-  storeData = async (value) => {
+  
+  soundState = "sound";
+  soundObject = new Audio.Sound();
+  
+  async componentDidMount() {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: false,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+      shouldDuckAndroid: true,
+      staysActiveInBackground: false,
+      playThroughEarpieceAndroid: true,
+    });
+
     try {
-      console.log("saved");
-      alert("Saved!");
-      return await AsyncStorage.setItem('points', value);
-      
-    } catch (e) {
-      console.log("can't save");
-      alert("Failed to save the data to the storage");
+      await this.soundObject.loadAsync(require('./../assets/gamesound.mp3'));
+      await this.soundObject.playAsync();
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  onEvent = (e) => {
-    if (e.type=='game-over') {
-      this.storeData(this.state.points);
-      this.setState({
-        running: false
-      });
+  async componentWillUnmount() {
+    try {
+      await this.soundObject.unloadAsync();
+      await this.soundObject.stopAsync();
+    } catch (error) {
+      console.log(error);
     }
- 
-    if (e.type == 'correct') {
+  }
+
+  storeData = async (points, username) => {
+    const v = [{
+      points:points,
+      username: username}];
+    AsyncStorage.getItem('points', (err,result) => {
+      if (result !== null) {
+        //console.log('Data found', result);
+        var arr = JSON.parse(result) || [];
+        var newPoints = arr.concat(v);
+        AsyncStorage.setItem('points', JSON.stringify(newPoints));
+      }
+      else {
+        //console.log("data not found");
+        AsyncStorage.setItem('points', JSON.stringify(v));
+      }
+    })
+  }
+
+  toggleSound = () => {
+    if (this.soundState === "sound") {
+      this.soundState = "nosound";
+      this.soundObject.pauseAsync();
+    } else if (this.soundState === "nosound") {
+      this.soundState = "sound";
+      this.soundObject.playAsync();
+    }
+  };
+
+  onEvent = (e) => { 
+   if (e.type == 'correct') {
       this.setState({
         points: this.state.points+10
       })
@@ -55,8 +106,10 @@ export default class Game extends React.Component  {
     }
   }
 
+  //game over
   onChangeTimer = () => {   
     this.setState({ running: false });
+    
   }
 
   reset = () => {
@@ -67,13 +120,43 @@ export default class Game extends React.Component  {
     });
 }
 
+  renderModalContent(){
+    return (
+      <View style={styles.modalView}>
+        <Form>
+          <Item fixedLabel>
+            <Label>Your score: {this.state.points}. To save it insert your username</Label>
+            <Input 
+              value={this.state.username}
+              onChangeText={(text) => { 
+                this.setState({username: text})}}
+            />
+            </Item>
+            <Button onPress={() => {
+              this.storeData(JSON.stringify(this.state.points), this.state.username);
+              this.reset()
+              
+              }}>
+              <Text>Play again</Text>
+            </Button>
+            <Button title="View Leaderboard" 
+            onPress={() => {
+              this.storeData(JSON.stringify(this.state.points), this.state.username);
+              this.props.navigation.navigate("GameOver", {points: this.state.points})
+              this.setState({
+              visibleModal: false
+              })
+          }
+            }>
+                <Text>View Leaderboard</Text>
+            </Button>
+        </Form>
+     
+      </View>
+      )
+    }
 
 
-//
-   /* componentDidMount() {
-        if (this.props.route.params.startAgain==true)
-        this.reset();
-    }*/
   
   render() {
   return (
@@ -81,6 +164,9 @@ export default class Game extends React.Component  {
       <Text style={styles.score}>Score</Text>
       <Text style={styles.points}>{this.state.points}</Text>
       <Timer key = {this.state.updateTimer} onChange={this.onChangeTimer}/>
+      <Pressable onPress={this.toggleSound}>
+        <Octicons name={this.soundState === "sound" ? "unmute" : "mute"} size={24} color="black" />
+      </Pressable>
       <GameEngine
       ref={(ref) => { this.engine = ref; }}
         style={styles.container}
@@ -88,7 +174,7 @@ export default class Game extends React.Component  {
         onEvent = {this.onEvent}
         systems={[MoveItem, Collision]}
         entities={{
-          1: {position: [WIDTH/2, HEIGHT-200], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          1: {position: [WIDTH/2, HEIGHT-200], item: this.state.item, renderer: <OurItem/>}, //-- Notice that each entity has a unique id (required)
           2: {position: [WIDTH-125, HEIGHT/3], category: "paper", renderer: <Bin/>},
           3: {position: [WIDTH-55, HEIGHT/3], category: "glass", renderer: <Bin/>},
           4: {position: [WIDTH/3.7, HEIGHT/3], category: "organic",renderer: <Bin/>},
@@ -106,24 +192,19 @@ export default class Game extends React.Component  {
           15: {position: [WIDTH/10, HEIGHT/14], category: "cloud", renderer: <Bin/>},
           // Floor
           16: {position: [0, HEIGHT/2.2], category: "floor", renderer: <Floor/>}
+
         }}>
       <StatusBar hidden={true} />
       </GameEngine>
       {!this.state.running && 
-      Alert.alert(
-          'Game over! Your score: '+this.state.points,
-          '',
-          [
-              {
-                  text: 'Play again',
-                  onPress: () => this.reset()
-              },
-              {
-                  text: 'View Leaderboard',
-                  onPress: () => this.props.navigation.navigate("GameOver", {points: this.state.points})
-              }
-          ]
-      )} 
+      <Modal
+      transparent={true}
+      visible={this.state.visibleModal}
+      animationType="slide"
+  >
+      {this.renderModalContent()}
+  </Modal>
+        } 
       <StatusBar style="auto" />
     </View>
   );
@@ -147,6 +228,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontFamily: 'Futura',
     textAlign: "right",
+  },
+  modalView: {
+    //justifyContent: "center",
+    //alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: "white",
+    width: WIDTH*0.8
   }
   
 });

@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 import Constants from './Constants';
 
 const RADIUS = Constants.RADIUS;
-class Item extends PureComponent {
+class OurItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,8 +74,6 @@ class Bin extends PureComponent {
           img = require('./assets/bin_plastic.png');
         else if (c=="cloud")
           img = require('./assets/cloud.png');
-        else if (c=="floor")
-          img = require('./assets/floor.png');
         else if (c=="trash")
           img = require('./assets/bin_trash.png');
         
@@ -91,7 +89,7 @@ class Timer extends PureComponent {
     super(props);
     this.state = {
       minutes: 0,
-      seconds: 5
+      seconds: 10
     }
   }
 
@@ -184,4 +182,4 @@ const styles = StyleSheet.create({
   }
 });
  
-export { Item, Bin, Timer, Floor };
+export { OurItem, Bin, Timer, Floor };

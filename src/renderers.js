@@ -135,6 +135,22 @@ render() {
 }
 }
  
+
+class Floor extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
+    render() {
+        const x = this.props.position[0] - RADIUS / 2;
+        const y = this.props.position[1] - RADIUS / 2;
+        let c = this.props.category;
+        let img;
+        img = require('./assets/floor.png');
+        return (
+          <Image source={img} style={[styles.floor, { left: x, top: y }]}/>
+          );
+}
+}
 const styles = StyleSheet.create({
   bin: {
     borderRadius: RADIUS * 2,
@@ -146,7 +162,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS * 2,
     width: RADIUS * 2,
     height: RADIUS * 2,
-    position: "absolute"
+    position: "absolute",
+    zIndex: 999
   },
   time: {
     fontSize: 40,
@@ -159,7 +176,12 @@ const styles = StyleSheet.create({
     color: "#F3B337",
     fontFamily: 'Futura',
     textAlign: "center",
+  },
+  floor: {
+    //alignSelf: 'stretch'
+    width: '100%',
+    marginHorizontal: 0
   }
 });
  
-export { Item, Bin, Timer };
+export { Item, Bin, Timer, Floor };

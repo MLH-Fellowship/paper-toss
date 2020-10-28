@@ -3,7 +3,7 @@ import React, {PureComponent} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, Text, View, Dimensions, Alert, Button} from 'react-native';
 import { GameEngine } from "react-native-game-engine";
-import { Item, Bin, Timer } from "../renderers";
+import { Item, Bin, Timer, Floor } from "../renderers";
 import { MoveItem, Collision } from "../systems";
 import Constants from './../Constants';
 const WIDTH = Constants.WIDTH;
@@ -88,7 +88,7 @@ export default class Game extends React.Component  {
         onEvent = {this.onEvent}
         systems={[MoveItem, Collision]}
         entities={{
-          1: {position: [WIDTH/2, HEIGHT-100], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
+          1: {position: [WIDTH/2, HEIGHT-200], item: this.state.item, renderer: <Item/>}, //-- Notice that each entity has a unique id (required)
           2: {position: [WIDTH-125, HEIGHT/3], category: "paper", renderer: <Bin/>},
           3: {position: [WIDTH-55, HEIGHT/3], category: "glass", renderer: <Bin/>},
           4: {position: [WIDTH/3.7, HEIGHT/3], category: "organic",renderer: <Bin/>},
@@ -105,20 +105,7 @@ export default class Game extends React.Component  {
           14: {position: [WIDTH/22, HEIGHT/12], category: "cloud", renderer: <Bin/>},
           15: {position: [WIDTH/10, HEIGHT/14], category: "cloud", renderer: <Bin/>},
           // Floor
-          16: {position: [WIDTH/10, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          17: {position: [WIDTH/1.2, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          18: {position: [WIDTH/1.1, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          19: {position: [WIDTH/2, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          20: {position: [WIDTH/2.4, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          21: {position: [WIDTH/3, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          22: {position: [WIDTH/4, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          23: {position: [WIDTH/5, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          24: {position: [WIDTH/7, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          25: {position: [WIDTH/-125, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          26: {position: [WIDTH/-120, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          27: {position: [WIDTH/1.5, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          28: {position: [WIDTH/1.7, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
-          29: {position: [WIDTH/1.3, HEIGHT/2.2], category: "floor", renderer: <Bin/>},
+          16: {position: [0, HEIGHT/2.2], category: "floor", renderer: <Floor/>}
         }}>
       <StatusBar hidden={true} />
       </GameEngine>

@@ -78,7 +78,8 @@ export default class Game extends React.Component  {
   render() {
   return (
     <View style={styles.container}>
-      <Text style={styles.points}>POINTS: {this.state.points}</Text>
+      <Text style={styles.score}>Score</Text>
+      <Text style={styles.points}>{this.state.points}</Text>
       <Timer key = {this.state.updateTimer} onChange={this.onChangeTimer}/>
       <GameEngine
       ref={(ref) => { this.engine = ref; }}
@@ -148,8 +149,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#63CDDA"
   },
+  score: {
+    fontSize: 20,
+    fontWeight: '400',
+    fontFamily: 'Futura',
+    textAlign: "right",
+  },
   points: {
-    color: 'red'
+    fontSize: 30,
+    fontWeight: '400',
+    fontFamily: 'Futura',
+    textAlign: "right",
   }
   
 });

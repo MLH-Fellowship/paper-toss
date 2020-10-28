@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 60,
     fontWeight: '400',
-    fontFamily: 'Thonburi-Bold',
+    fontFamily: 'Futura',
     color: "#fff"
   },
   instructions: {
     fontSize: 20,
     fontWeight: '400',
-    fontFamily: 'Thonburi-Bold',
+    fontFamily: 'Futura',
     color: "#fff",
     padding: 10
   },
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontWeight: '400',
-    fontFamily: 'Thonburi-Bold',
+    fontFamily: 'Futura',
     color: "#fff",
     width: 200,
     marginTop: 0,

@@ -127,8 +127,8 @@ render() {
   return (
       <View>
           { minutes === 0 && seconds === 0
-              ? <Text>Busted!</Text>
-              : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+              ? <Text style={styles.busted}>Busted!</Text>
+              : <Text style={styles.time}>Time: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
           }
       </View>
   )
@@ -147,8 +147,19 @@ const styles = StyleSheet.create({
     width: RADIUS * 2,
     height: RADIUS * 2,
     position: "absolute"
+  },
+  time: {
+    fontSize: 40,
+    color: "#F3B337",
+    fontFamily: 'Futura',
+    textAlign: "center",
+  },
+  busted: {
+    fontSize: 30,
+    color: "#F3B337",
+    fontFamily: 'Futura',
+    textAlign: "center",
   }
-
 });
  
 export { Item, Bin, Timer };

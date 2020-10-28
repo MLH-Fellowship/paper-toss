@@ -16,7 +16,7 @@ import { Octicons } from '@expo/vector-icons';
 import Constants from './../Constants';
 const WIDTH = Constants.WIDTH;
 const HEIGHT = Constants.HEIGHT;
-
+let iconURL = ['https://www.shareicon.net/data/128x128/2015/08/17/86679_cat_256x256.png', 'https://www.shareicon.net/data/128x128/2015/08/17/86680_cat_256x256.png','https://www.shareicon.net/data/128x128/2015/08/17/86684_cat_256x256.png', 'https://www.shareicon.net/data/128x128/2015/04/04/17581_cat_128x128.png','https://www.shareicon.net/data/128x128/2015/04/04/17584_animal_128x128.png','https://www.shareicon.net/data/128x128/2015/04/04/17589_animal_128x128.png','https://www.shareicon.net/data/128x128/2015/04/04/17590_animal_128x128.png', 'https://www.shareicon.net/data/128x128/2015/04/04/17586_animal_128x128.png'];
 
 export default class Game extends React.Component  {
   constructor() {
@@ -68,8 +68,11 @@ export default class Game extends React.Component  {
   storeData = async (points, username) => {
     const v = [{
       points:points,
-      username: username}];
+      username: username,
+      icon: iconURL[[Math.floor(Math.random() * iconURL.length)]]
+    }];
     AsyncStorage.getItem('points', (err,result) => {
+
       if (result !== null) {
         //console.log('Data found', result);
         var arr = JSON.parse(result) || [];
@@ -124,25 +127,29 @@ export default class Game extends React.Component  {
     return (
       <View style={styles.modalView}>
         <Form>
-          <Item fixedLabel>
-            <Label>Your score: {this.state.points}. To save it insert your username</Label>
-            <Input 
+          <Item stackedLabel>
+            <Label>Insert a username to save your score!</Label>
+            <Input
               value={this.state.username}
               onChangeText={(text) => { 
                 this.setState({username: text})}}
             />
             </Item>
-            <Button onPress={() => {
+            <Button rounded success 
+              style={styles.modalButton}
+              onPress={() => {
               this.storeData(JSON.stringify(this.state.points), this.state.username);
               this.reset()
               
               }}>
               <Text>Play again</Text>
             </Button>
-            <Button title="View Leaderboard" 
+            <Button rounded warning
+            style={styles.modalButton}
+            title="View Leaderboard" 
             onPress={() => {
               this.storeData(JSON.stringify(this.state.points), this.state.username);
-              this.props.navigation.navigate("GameOver", {points: this.state.points})
+              this.props.navigation.navigate("GameOver", {points: this.state.points, username: this.state.username})
               this.setState({
               visibleModal: false
               })
@@ -230,11 +237,19 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   modalView: {
-    //justifyContent: "center",
-    //alignItems: "center",
-    alignSelf: "center",
     backgroundColor: "white",
-    width: WIDTH*0.8
-  }
+    display: 'flex',
+    flexDirection: 'row',
+    height: HEIGHT*0.3,
+    marginTop: 200,
+    width: WIDTH*0.9,
+    borderRadius: 20,
+    alignSelf: 'center',
+    alignContent: 'center'
+  },
+ modalButton: {
+   paddingVertical: 50,
+   alignSelf: 'center'
+ }
   
 });

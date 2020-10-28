@@ -145,7 +145,7 @@ class Floor extends PureComponent {
         const y = this.props.position[1] - RADIUS / 2;
         let c = this.props.category;
         let img;
-        img = require('./assets/floor.png');
+        img = require('./assets/floor2.png');
         return (
           <Image source={img} style={[styles.floor, { left: x, top: y }]}/>
           );
